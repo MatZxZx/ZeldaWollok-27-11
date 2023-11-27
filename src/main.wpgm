@@ -1,0 +1,84 @@
+//Importación de archivos:
+	import wollok.game.*
+	import Link.*
+	import paredes.*
+	import consumibles.*
+	import equipables.*
+	import mapas.*
+	import Enemigos.*
+
+//Programa integro:
+	program ZeldaPC {
+		
+		//Variables nulas rellenadas con visuales:
+			jugador.espadaObj(espada)
+			jugador.arcoObj(arco)
+			jugador.boomerangObj(boomerang)
+		
+		//Ventana:
+			game.width(16)
+			game.height(14)
+			game.cellSize(50)
+			game.title("The Legend Of Zelda PC: Wollok Edition")
+			
+		//Visuales:
+			game.addVisual(jugador)
+			game.addVisual(espada)
+			game.addVisual(arco)
+			game.addVisual(boomerang)
+			
+			mapping.dibujar()
+			
+		//Sentencias:
+		
+			//Pickeos:
+				game.onCollideDo(espada, {pick => jugador.agarrarEspada()})
+				game.onCollideDo(arco, {pick => jugador.agarrarArco()})
+				game.onCollideDo(boomerang, {pick => jugador.agarrarBoomerang()})
+			
+			//Registros de tecla:
+			
+				//Inventario:
+					keyboard.enter().onPressDo{ game.say(jugador, 
+						"Corazones: " + jugador.corazonesL().toString() + " / "
+						+ "Rupias: " + jugador.rupias().toString() + " / "
+						+ "Bombas: " + jugador.bombas().toString()
+					)}
+				
+				//Arma Actual:
+					keyboard.backspace().onPressDo{ game.say(jugador, "Lleva: " + jugador.equipadoAhora().toString() + " como equipable.")}
+				
+				//Interacciones del jugador:
+				
+					//Arriba:
+					keyboard.up().onPressDo{jugador.position(jugador.position().up(1));
+						jugador.orientacion(0);
+						jugador.giro()
+					}
+					
+					//Abajo:
+					keyboard.down().onPressDo{jugador.position(jugador.position().down(1));
+						jugador.orientacion(1);
+						jugador.giro()
+					}
+		
+					//Izquierda:
+					keyboard.left().onPressDo{jugador.position(jugador.position().left(1));
+						jugador.orientacion(2);
+						jugador.giro()
+					}
+											
+					//Derecha:
+					keyboard.right().onPressDo{jugador.position(jugador.position().right(1));
+						jugador.orientacion(3);
+						jugador.giro()
+					}
+					
+				//Teclas de interacción:
+				keyboard.z().onPressDo{jugador.ataqueReg()} //A
+				keyboard.x().onPressDo{jugador.itemReg()} //B 
+				
+//Ejecución:
+	game.start()
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
